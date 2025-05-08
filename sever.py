@@ -120,3 +120,20 @@ class TupleSpace:
             server_socket.listen(10)
             print(f"Server listening on port {port}")
 
+            def print_summary():
+                while True:
+                    time.sleep(10)
+                    print(tuple_space.get_summary())
+
+            summary_thread = threading.Thread(target=print_summary)
+            summary_thread.daemon = True
+            summary_thread.start()
+
+            while True:
+                client_socket, client_address = server_socket.accept()
+                client_thread = threading.Thread(target=handle_client, args=(client_socket, tuple_space))
+                client_thread.start()
+
+    if __name__ == "__main__":
+        main()
+
