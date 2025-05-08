@@ -31,3 +31,12 @@ class TupleSpace:
                 return ""
             self.read_count += 1
             return self.tuples[key]
+
+        def get(self, key):
+            with self.lock:
+                if key not in self.tuples:
+                    self.error_count += 1
+                    return ""
+                value = self.tuples.pop(key)
+                self.get_count += 1
+                return value
