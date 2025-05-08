@@ -15,3 +15,16 @@ def main():
     hostname = sys.argv[1]
     port = int(sys.argv[2])
     request_file = sys.argv[3]
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
+        client_socket.connect((hostname, port))
+
+        with open(request_file, 'r') as file:
+            for line in file:
+                line = line.strip()
+                if not line:
+                    continue
+
+                parts = line.split()
+                operation = parts[0]
+                key = parts[1]
+                value = " ".join(parts[2:]) if len(parts) > 2 else ""
