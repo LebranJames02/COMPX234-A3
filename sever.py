@@ -104,3 +104,19 @@ class TupleSpace:
                 print(f"Error handling client: {e}")
                 break
         client_socket.close()
+
+    def main():
+        if len(sys.argv) != 2:
+            print("Usage: python server.py <port>")
+            sys.exit(1)
+
+        port = int(sys.argv[1])
+        tuple_space = TupleSpace()
+
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
+            # 设置端口复用，避免程序重启时端口占用问题
+            server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            server_socket.bind(('0.0.0.0', port))
+            server_socket.listen(10)
+            print(f"Server listening on port {port}")
+
