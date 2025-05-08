@@ -28,3 +28,19 @@ def main():
                 operation = parts[0]
                 key = parts[1]
                 value = " ".join(parts[2:]) if len(parts) > 2 else ""
+                # 构建请求消息
+                if operation == "PUT":
+                    request = f"{str(len(line) + 3).zfill(3)} P {key} {value}"
+                elif operation == "READ":
+                    request = f"{str(len(line) + 3).zfill(3)} R {key}"
+                elif operation == "GET":
+                    request = f"{str(len(line) + 3).zfill(3)} G {key}"
+                else:
+                    print(f"Invalid operation: {operation}")
+                    continue
+
+                response = send_request(client_socket, request)
+                print(f"{line}: {response}")
+
+            if __name__ == "__main__":
+                main()
